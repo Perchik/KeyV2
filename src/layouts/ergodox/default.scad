@@ -7,7 +7,7 @@ DRAW_SIDE = "both"; // "both" "left" "right"
 ONLY_ROW = -1;
 ONLY_COL = -1;
 
-// Every key willU default to these values if the field is unset on the key.
+// Every key will default to these values if the field is unset on the key.
 KEY_DEFAULT = [
   ["height",   1],
   ["width",    1],  
@@ -17,7 +17,7 @@ KEY_DEFAULT = [
   ["left_padding", .1 ],
   ["vertical_align", "center"], // "top" | "center" | "bottom" . Which edge to align with a normal 1u key; only applies if height > 1.
   
-  ["font_size", 5],
+  ["font_size", 4],
   // Normal, single legend.
   ["label", ""],
   ["label_pos", [0,0]],

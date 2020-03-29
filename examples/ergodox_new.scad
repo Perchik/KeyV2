@@ -1,20 +1,45 @@
 include <../includes.scad>
 
 SMALL_FONT_SIZE = 3;
-
+$font="DejaVu Sans";
 // Uncomment and change these configs as needed.
 // ERGODOX_80 = false;
-// DRAW_SIDE="both"; //can be "left" "right" or "both"
+ DRAW_SIDE="left"; //can be "left" "right" or "both"
 // ONLY_ROW=2;
 // ONLY_COL=2;
 // DRAW_THUMB_KEYS = false;
 // DRAW_MOD_KEYS = false;
-// DRAW_PLAIN_KEYS = false;
+ DRAW_PLAIN_KEYS = false;
 
+// Every key will default to these values if the field is unset on the key.
+KEY_DEFAULT = [
+  ["height",   1],
+  ["width",    1],  
+  ["key_type",  "plain"], // "blank" | "mod" | "plain" | "thumb"
+  ["key_bump", false],
+  
+  ["left_padding", .1 ],
+  ["vertical_align", "center"], // "top" | "center" | "bottom" . Which edge to align with a normal 1u key; only applies if height > 1.
+  
+  ["font_size", 3],
+  // Normal, single legend.
+  ["label", ""],
+  ["label_pos", [0,0]],
+  // For two line legends 
+  ["top_label", ""],
+  ["top_label_pos", [0,-0.75]],
+  ["bottom_label", ""],
+  ["bottom_label_pos", [0,0.75]],
+
+  // Key front   
+  ["front_label", ""],
+  ["front_label_pos", [0,-.5]],
+  ["front_font_size", 3],
+];
 KEY_0_0 = [
   ["width", 1.5],
-  ["label", "_"],
-  ["label_2", "-"],
+  ["top_label", "_"],
+  ["bottom_label", "-"],
   ["key_type",  "mod"],
 ];
 KEY_0_1 = [ 
@@ -72,6 +97,7 @@ KEY_0_13 = [
   ["width", 1.5],
   ["top_label", "+"],
   ["bottom_label","="],
+  ["font_size", SMALL_FONT_SIZE],
   ["key_type",  "mod"],
 ];
 
@@ -79,6 +105,8 @@ KEY_1_0 = [
   ["width", 1.5],
   ["label", "Tab"], 
   ["font_size", SMALL_FONT_SIZE],
+  ["front_label", "Caps"],
+  ["front_label_pos", [0,-.2]],
   ["key_type",  "mod"],
 ];
 KEY_1_1 = [
@@ -109,11 +137,17 @@ KEY_1_6 = [
   ["height", 1.5],
   ["label", "{"],
 	["vertical_align", "top"],
+    ["front_label", "☽"],
+     ["front_label_pos", [0,-.2]],
+  ["front_font_size",4],
   ["key_type",  "mod"],
 ];
 KEY_1_7 = [
   ["height", 1.5],
   ["label", "}"],
+  ["front_label", "☀"],
+  ["front_label_pos", [0,-.2]],
+  ["front_font_size",5],
   ["vertical_align", "top"],
   ["key_type",  "mod"],
 ];
@@ -134,6 +168,7 @@ KEY_1_11 = [
 ];
 KEY_1_12 = [
   ["label", "P"],
+    ["front_label", "+"],
 ];
 KEY_1_13 = [
   ["width", 1.5],
@@ -179,17 +214,21 @@ KEY_2_6 = [
 ];
 KEY_2_7 = [
   ["label", "J"],
+  ["front_label", "1"],
   ["key_bump", true],
 ];
 KEY_2_8 = [
   ["label", "K"],
+   ["front_label", "2"],
 ];
 KEY_2_9 = [
   ["label", "L"],
+    ["front_label", "3"],
 ];
 KEY_2_10 = [
   ["top_label", ":"],
   ["bottom_label", ";"],
+   ["front_label", "-"],
   ["font_size", 4],
 ];
 KEY_2_11 = [
@@ -203,7 +242,7 @@ KEY_3_0 = [
   ["width", 1.5],
   ["label", "("],
   ["front_label", "Shift"],
-  ["front_label_pos", [0,-.4]],
+  ["front_label_pos", [0,-.1]],
   ["key_type",  "mod"],
 ];
 KEY_3_1 = [
@@ -238,6 +277,7 @@ KEY_3_8 = [
 ];
 KEY_3_9 = [
   ["label", "M"],
+  ["front_label", "0"],
 ];
 KEY_3_10 = [
   ["top_label", "<"],
@@ -270,7 +310,7 @@ KEY_4_0 = [
 ];
 KEY_4_1 = [
   ["label", "⚛"],
-  ["font_size", 8],
+  ["font_size", 7],
   ["key_type",  "mod"],
 ];
 KEY_4_2 = [
@@ -290,22 +330,25 @@ KEY_4_4 = [
   ["key_type",  "mod"],
 ];
 KEY_4_5 = [
-  ["label", "⌂"],
-  ["font_size", 7],
+  ["label", "Home"],
+  ["front_label", "Ins"],
+  ["font_size", 2],
   ["key_type",  "mod"],
 ];  
 KEY_4_6 = [
   ["label", "▲"],
+  ["font_size", 4],
   ["key_type",  "mod"],
 
 ];
 KEY_4_7 = [
   ["label", "▼"],
+    ["font_size", 4],
   ["key_type",  "mod"],
 ];
 KEY_4_8 = [
   ["label", "End"],
-  ["font_size", SMALL_FONT_SIZE],
+  ["font_size", 2],
   ["key_type",  "mod"],
 ];
 KEY_4_9 = [
@@ -316,17 +359,19 @@ KEY_4_9 = [
 
 
 KEY_LTHUMB_0 = [
-  ["width", 1],
-  ["label", "x"],
+  ["label", "♫"],
+  ["font_size", 4],
   ["key_type",  "thumb"],
 ];
 KEY_LTHUMB_1 = [
-  ["label", "♫"],
+  ["label", "☕"],
+  ["font_size", 5],
   ["key_type",  "thumb"],
 ];
 KEY_LTHUMB_2A = [
-  ["label", ""],
+  ["label", "⌫"],
   ["height", ERGODOX_80 ? 1 : 2],
+  ["font_size", SMALL_FONT_SIZE],
   ["vertical_align", "top"],
   ["key_type",  "thumb"],
 ];
@@ -336,7 +381,9 @@ KEY_LTHUMB_2B = [
 ];
 
 KEY_LTHUMB_3A = [
-  ["label", ""], ["height", ERGODOX_80 ? 1 : 2],
+  ["label", "⌦"],
+  ["font_size", SMALL_FONT_SIZE],
+  ["height", ERGODOX_80 ? 1 : 2],
   ["vertical_align", "top"],
   ["key_type",  "thumb"],
 ];
@@ -345,33 +392,34 @@ KEY_LTHUMB_3B = [
   ["key_type",  "thumb"],
 ];
 KEY_LTHUMB_4 = [
-  ["label", ""],
+  ["label", "⇥"],  
+  ["font_size", 4],
   ["key_type",  "thumb"],
 ];
 KEY_LTHUMB_5 = [
-  ["label", ""],
-  ["key_type",  "thumb"],
-];
-KEY_LTHUMB_6 = [
-  ["label", ""],
+  ["label", "⌘"], 
+  ["font_size", 4],
   ["key_type",  "thumb"],
 ];
 
 KEY_RTHUMB_0 = [
-  ["label", ""],
+  ["label", "◀"],
+  ["font_size", 4],
   ["key_type",  "thumb"],
 ];
 KEY_RTHUMB_1 = [
-  ["label", ""],
+  ["label", "▶"],
+  ["font_size", 4],
   ["key_type",  "thumb"],
 ];
 KEY_RTHUMB_2= [
-  ["label", ""],
+  ["label", "PgUp"],
+  ["font_size", 2],
   ["key_type",  "thumb"],
 
 ];
 KEY_RTHUMB_3A = [
-  ["label", ""],
+  ["label", "↩"],
   ["height", ERGODOX_80 ? 1 : 2],
   ["vertical_align", "top"],
   ["key_type",  "thumb"],
@@ -382,7 +430,7 @@ KEY_RTHUMB_3B = [
   
 ];
 KEY_RTHUMB_4A = [
-  ["label", ""],
+  ["label", "␣"],
   ["height", ERGODOX_80 ? 1 : 2],
   ["vertical_align", "top"],
   ["key_type",  "thumb"],
@@ -392,11 +440,8 @@ KEY_RTHUMB_4B = [
   ["key_type",  "thumb"],
 ];
 KEY_RTHUMB_5 = [
-  ["label", ""],
-  ["key_type",  "thumb"],
-];
-KEY_RTHUMB_6 = [
-  ["label", ""],
+["label", "PgDn"],
+  ["font_size", 2],
   ["key_type",  "thumb"],
 ];
 
