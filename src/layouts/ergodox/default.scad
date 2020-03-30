@@ -1,107 +1,101 @@
-ERGODOX_80 = false;
+make_mods = true;
+make_plain = true;
+make_left = true;
+make_right = true;
+make_thumb_clusters = true;
 
-DRAW_MOD_KEYS = true;
-DRAW_PLAIN_KEYS = true;
-DRAW_THUMB_KEYS = true;
-DRAW_SIDE = "both"; // "both" "left" "right"
-ONLY_ROW = -1;
-ONLY_COL = -1;
 
-// Every key will default to these values if the field is unset on the key.
-KEY_DEFAULT = [
-  ["height",   1],
-  ["width",    1],  
-  ["key_type",  "plain"], // "blank" | "mod" | "plain" | "thumb"
-  ["key_bump", false],
-  
-  ["left_padding", .1 ],
-  ["vertical_align", "center"], // "top" | "center" | "bottom" . Which edge to align with a normal 1u key; only applies if height > 1.
-  
-  ["font_size", 4],
-  // Normal, single legend.
-  ["label", ""],
-  ["label_pos", [0,0]],
-  // For two line legends 
-  ["top_label", ""],
-  ["top_label_pos", [0,-0.75]],
-  ["bottom_label", ""],
-  ["bottom_label_pos", [0,0.75]],
+only_row = -1;
 
-  // Key front   
-  ["front_label", ""],
-  ["front_label_pos", [0,-.5]],
-  ["front_font_size", 3],
+ergodox_keys = [    
+        
+[1.5,  1,  1,      1,      1,   1,         1,       0,           1,    1,   1,  1,  1,  1,  1.5],
+[1.5,  1,  1,      1,      1,   1,  [1, 1.5],       0,     [1, 1.5],   1,   1,  1,  1,  1,  1.5],
+[1.5,  1,  1,      1,      1,   1,         0,       0,            0,   1,   1,  1,  1,  1,  1.5],
+[1.5,  1,  1,      1,      1,   1,  [1, 1.5],       0,     [1, 1.5],   1,   1,  1,  1,  1,  1.5],
+[  1,  1,  1,      1,      1,   0,         0,       0,            0,   0,   1,  1,  1,  1,    1],
+
+[  0], //empty row for spacing
+
+// Thumb clusters
+[  0,  0,  0,     0,       0,   1,         1,       0,            1,   1,   0,  0,  0,  0,    0],
+[  0,  0,  0,     0,   [1,2], [1,2],       1,       0,            1,[1,2],[1,2],0,  0,  0,    0],
+[  0,  0,  0,     0,       0,   0,         1,       0,            1,   0,   0,  0,  0,  0,    0],
 ];
-// Simulate a class by using vector based search lookup
-function lookup(data, field) = data[search(field, data, num_returns_per_match=1)[0]][1];
-function lookup_or_default(k, field) = let(x = lookup(k, field)) x == undef ? lookup(KEY_DEFAULT, field) : x;
 
-// For all of these "accessors" return the default if it's unset in the child.
-function width(key) = lookup_or_default(key, ["width"]);
-function height(key) = lookup_or_default(key, ["height"]);
-function key_type(key) = lookup_or_default(key, ["key_type"]);
-function key_bump(key) = lookup_or_default(key, ["key_bump"]);
 
-function left_pad(key) = lookup_or_default(key, ["left_padding"]);
-function total_width(key)= width(key) + left_pad(key);
-function vertical_align(key)= height(key) > 1 ? lookup_or_default(key, ["vertical_align"]) : "none";
 
-function font_size(key) = lookup_or_default(key, ["font_size"]);
-function label(key) = lookup_or_default(key, ["label"]);
-function label_pos(key) = lookup_or_default(key, ["label_pos"]);
+PLAIN_KEY = 1;
+MOD_KEY = 2;
+THUMB_KEY = 3;
+key_types = [
+// Mapping for selectively rendering keys. 1=plain keys, 2=modifiers, 3=thumb clusters.
+[  2,  1,  1,  1,  1,  1,  1,     0,     1,  1,  1,  1,  1,  1,  2],
+[  2,  1,  1,  1,  1,  1,  2,     0,     2,  1,  1,  1,  1,  1,  2],
+[  2,  1,  1,  1,  1,  1,  0,     0,     0,  1,  1,  1,  1,  1,  2],
+[  2,  1,  1,  1,  1,  1,  2,     0,     2,  1,  1,  1,  1,  1,  2],
+[  2,  2,  2,  2,  2,  2,  0,     0,     0,  2,  2,  2,  2,  2,  2],
 
-function top_label(key) = lookup_or_default(key, ["top_label"]);
-function top_label_pos(key) = lookup_or_default(key, ["top_label_pos"]);
+[  0], // Empty spacing row
 
-function bottom_label(key) = lookup_or_default(key, ["bottom_label"]);
-function bottom_label_pos(key) = lookup_or_default(key, ["bottom_label_pos"]);
+[  0,  0,  0,  0,  0,  3,  3,     0,     3,  3,  0,  0,  0,  0,  0],
+[  0,  0,  0,  0,  3,  3,  3,     0,     3,  3,  3,  0,  0,  0,  0],
+[  0,  0,  0,  0,  0,  0,  3,     0,     3,  0,  0,  0,  0,  0,  0]
+]; 
 
-function front_label(key) = lookup_or_default(key, ["front_label"]);
-function front_font_size(key) = lookup_or_default(key, ["front_font_size"]);
-function front_label_pos(key) = lookup_or_default(key, ["front_label_pos"]);
 
-// Recursively compute column distance
+function show_key(list, r, c)=
+    !is_empty(list, r, c) && 
+    (      
+     (make_mods && key_types[r][c] == MOD_KEY) || 
+     (make_plain && key_types[r][c] == PLAIN_KEY) ||
+     (make_thumb_clusters && key_types[r][c] == THUMB_KEY)
+    ) &&
+    ( 
+      ( c <= 6 && make_left ) ||
+      (c >= 8 && make_right) ) &&
+    (only_row==-1 || r==only_row)
+;
+
+// Zero represents an empty key.
+function is_empty(list, r, c)=
+      is_list(list[r][c])? false : list[r][c]==0;
+
+function get_key_height(list, r, c)=
+    //if only one value is provided, the height defaults to 1
+      is_list(list[r][c]) ? list[r][c][1] : 1;
+
+function get_key_width(list, r, c)=
+      is_list(list[r][c]) ? list[r][c][0] : max(1, list[r][c]);
+
 function get_column_distance(list, r, c) =
-   c==0 ? 0 : total_width(list[r][c]) + get_column_distance(list,r,c-1);
-
-function show_key(key, r, c) = let(t = key_type(key)) t!="blank"  && 
-((DRAW_MOD_KEYS  && t == "mod") || (DRAW_PLAIN_KEYS && t=="plain") || (DRAW_THUMB_KEYS && t=="thumb")) &&
-(ONLY_COL==-1 || ONLY_COL==c) &&
-(ONLY_ROW==-1 || ONLY_ROW==r) &&
-// 7 is the split between columns on the ergodox. This would have to change to make this generic.
-((DRAW_SIDE=="left" && c < 7) || (DRAW_SIDE=="right" && c >7) || DRAW_SIDE == "both");
-
+   c==0 ? 0 : get_key_width(list,r,c) + get_column_distance(list,r,c-1) + (r==4 && c==0 ?.125:0);
 
 module ergodox_layout(list) {
- for (row = [0:len(list)]){   
-    for(col = [0:len(list[row])-1]) {
-      key = list[row][col];
-      if(show_key(key, row, col)){
-        width = width(key);
-        height = height(key);
-        col_distance = get_column_distance(list, row, col) ;
-        bottom_align_offset =  (height - 1)/2;
+  for (row = [0:len(list)]){
+    if(is_list(list[row])){
+        for(col = [0:len(list[row])-1]) {
+          width = get_key_width(list, row, col);
+          height = get_key_height(list, row, col);
+          col_distance = get_column_distance(list, row, col) ;
 
-        v = vertical_align(key);         
-        v_offset =  v=="top" ? height/2 - 1/2: (v=="bottom" ? -height/2 + 1/2: 0 );
-        translate_u(col_distance - width/2, -row - v_offset) {
-          uh(height){
-            u(width) { 
-              $row = row;
-              $column = col;     
-                          
-              $key_bump= key_bump(key);
-            
-              // No semicolons here!
-              legend(label(key), label_pos(key), font_size(key))
-              legend(top_label(key), top_label_pos(key), font_size(key))
-              legend(bottom_label(key), bottom_label_pos(key), font_size(key))
-              front_legend(front_label(key), front_label_pos(key), front_font_size(key))
-              children();
+          bottom_align_offset =  (height - 1)/2;
+          // The 7th row has the lower of the two 1.5 tall keys, so it needs to be aligned with the bottom of the row instead of the top.
+          v_offset = row==3 && height > 1 ? bottom_align_offset : height/2;
+       
+          if(show_key(list,row,col)){
+            translate_u(col_distance - width/2, -row - v_offset) {
+              uh(height){
+                u(width) { 
+                  $row = row;
+                  $column = col;            
+                
+                  children();
+                }
+              }
             }
           }
         }
       }
-    }
-  }
+   }
 }

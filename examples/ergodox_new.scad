@@ -7,9 +7,9 @@ $font="DejaVu Sans";
  DRAW_SIDE="left"; //can be "left" "right" or "both"
 // ONLY_ROW=2;
 // ONLY_COL=2;
-// DRAW_THUMB_KEYS = false;
-// DRAW_MOD_KEYS = false;
- DRAW_PLAIN_KEYS = false;
+ DRAW_THUMB_KEYS = false;
+ DRAW_MOD_KEYS = false;
+// DRAW_PLAIN_KEYS = false;
 
 // Every key will default to these values if the field is unset on the key.
 KEY_DEFAULT = [
@@ -112,19 +112,19 @@ KEY_1_0 = [
 KEY_1_1 = [
   ["label", "Q"],
   ["front_label", "↥"],
-  ["front_font_size", 4],
+  ["front_font_size",3],
   ["front_label_pos", [0, -.3]], 
 ];
 KEY_1_2 = [
   ["label", "W"],
   ["front_label", "⇧"],
-  ["front_font_size", 6],
+  ["front_font_size", 4],
   ["front_label_pos", [0, -.3]],
 ];
 KEY_1_3 = [
   ["label", "E"],
   ["front_label", "↧"],
-  ["front_font_size", 4],
+  ["front_font_size",3],
   ["front_label_pos", [0, -.3]], 
 ];
 KEY_1_4 = [
@@ -186,19 +186,19 @@ KEY_2_0 = [
 ];
 KEY_2_1 = [
   ["label", "A"],
-  ["front_font_size", 6],
+  ["front_font_size", 4],
   ["front_label_pos", [0, -.3]],
   ["front_label", "⇦"],
 ];
 KEY_2_2 = [
   ["label", "S"],
-  ["front_font_size", 6],
+  ["front_font_size", 4],
   ["front_label_pos", [0, -.3]],
   ["front_label", "⇩"],
 ];
 KEY_2_3 = [
   ["label", "D"],
-  ["front_font_size", 6],
+  ["front_font_size", 4],
   ["front_label_pos", [0, -.3]],
   ["front_label", "⇨"],
 ];
@@ -359,8 +359,8 @@ KEY_4_9 = [
 
 
 KEY_LTHUMB_0 = [
-  ["label", "♫"],
-  ["font_size", 4],
+  ["label", "↸♫"],
+  ["font_size", 3],
   ["key_type",  "thumb"],
 ];
 KEY_LTHUMB_1 = [
@@ -392,7 +392,7 @@ KEY_LTHUMB_3B = [
   ["key_type",  "thumb"],
 ];
 KEY_LTHUMB_4 = [
-  ["label", "⇥"],  
+  ["label", "↬"],  
   ["font_size", 4],
   ["key_type",  "thumb"],
 ];
@@ -471,9 +471,9 @@ $ergodox_keys = [
 //
 $stem_slop = 0.4;
 $stem_type = "rounded_cherry";
-$rounded_cherry_stem_d = 5.8;
+$rounded_cherry_stem_d = 6;
 
-$support_type ="disable";
+$support_type ="flared";
 // to turn on full sculpting
 $double_sculpted = true;
 // to make the font fit
@@ -506,7 +506,7 @@ ergodox_layout($ergodox_keys) {
            key = $ergodox_keys[$row][$column];
             //key bump on f and j
           // uncomment when prototyping for faster prototypes!
-           $dish_type = "disable"; 
+         //  $dish_type = "disable"; 
            $stem_support_type = "disable"; 
           key();        
 
